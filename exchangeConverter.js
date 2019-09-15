@@ -23,10 +23,6 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next) => {
-
-   console.log("For debug");
-   console.log(ctx.transactions);
-
    let resp = await sendData(ctx);
    ctx.body = resp;
 });
@@ -67,7 +63,6 @@ async function convertTransactionAmount(ctx) {
       let ex_rate = ex_resp.rates[resp.currency];
 
       let convertedAmount = parseFloat((resp.amount/ex_rate).toFixed(4));
-      // delete resp.exchangeUrl;
       resp.convertedRate = ex_rate;
       resp.convertedAmount = convertedAmount;
 
@@ -79,6 +74,7 @@ async function convertTransactionAmount(ctx) {
 
 }
 
+
 function generateExchangeUrl(resp){
 
    let date = new Date(resp.createdAt);
@@ -87,6 +83,7 @@ function generateExchangeUrl(resp){
 
    return resp.exchangeUrl.replace("Y-M-D", ymd);
 }
+
 
 console.log(`Exchange converter listening on port ${port} converting ${nrOfTransactions} request at once.`);
 app.listen(port || 3030);
